@@ -11,7 +11,7 @@ st.title("🏦 Banking Financial & Risk Dashboard")
 @st.cache_data
 def load_data():
     loan_df = pd.read_csv('loan_data.csv')
-    trans_df = pd.read_csv('trans_data.csv')
+    trans_df = pd.read_csv('trans_data.zip')
     return loan_df, trans_df
 
 loan_df, trans_df = load_data()
