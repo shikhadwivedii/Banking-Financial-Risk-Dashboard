@@ -121,3 +121,12 @@ elif menu == "Loan Maturity Analysis":
 import streamlit as st
 from model_builder import train_model
 
+# --- ADD THIS TO THE VERY BOTTOM OF app.py ---
+from model_builder import train_model # Keep this at the top with your other imports
+
+st.sidebar.markdown("---")
+if st.sidebar.button("Run Predictive Analysis"):
+    # This keeps the UI clean until the user specifically asks for it
+    model, scaler, auc = train_model(df)
+    st.sidebar.write(f"Model AUC: {auc:.2f}")
+    st.sidebar.success("Model trained successfully!")
