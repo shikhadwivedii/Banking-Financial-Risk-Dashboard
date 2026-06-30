@@ -1,0 +1,1 @@
+Developed a logistic regression model for credit risk assessment with an AUC of 0.72. The model logic is built into the repository to serve as the backend for future automated risk screening
