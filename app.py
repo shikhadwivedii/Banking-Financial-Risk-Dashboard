@@ -121,21 +121,3 @@ elif menu == "Loan Maturity Analysis":
 import streamlit as st
 from model_builder import train_model
 
-# Load your data
-df = pd.read_csv('loan_data.csv')
-model, scaler, auc = train_model(df)
-
-st.sidebar.header("Loan Prediction Input")
-amount = st.sidebar.number_input("Loan Amount")
-duration = st.sidebar.slider("Duration (months)", 12, 60)
-payments = st.sidebar.number_input("Monthly Payment")
-
-if st.sidebar.button("Predict Risk"):
-    # Scale input the same way as training data
-    input_data = scaler.transform([[amount, duration, payments]])
-    prediction = model.predict(input_data)
-    prob = model.predict_proba(input_data)[0][1]
-    
-    st.write(f"Risk Probability: {prob:.2%}")
-    st.write("Model AUC Score:", auc)
-
