@@ -1,5 +1,28 @@
 import streamlit as st
 import pandas as pd
+# ... (your other imports like model_builder, plotly, etc.)
+
+# --- THE GATEKEEPER START ---
+def check_password():
+    st.sidebar.title("Login")
+    user_pass = st.sidebar.text_input("Enter Password", type="password")
+    if user_pass == st.secrets["APP_PASSWORD"]:
+        return True
+    else:
+        st.sidebar.error("Incorrect password")
+        return False
+
+if not check_password():
+    st.stop() # This stops the rest of the code from running
+# --- THE GATEKEEPER END ---
+
+# NOW, YOUR DASHBOARD CODE STARTS BELOW THIS LINE
+st.title("Banking Financial Risk Dashboard")
+# ... (your existing code for data loading, charts, etc.)
+
+
+import streamlit as st
+import pandas as pd
 import plotly.express as px
 from sklearn.linear_model import LogisticRegression
 
@@ -94,3 +117,25 @@ elif menu == "Loan Maturity Analysis":
       specific duration or amount ranges.
     * Use this to see if the bank should tighten requirements for long-term loans.
     """)
+
+import streamlit as st
+from model_builder import train_model
+
+# Load your data
+df = pd.read_csv('loan_data.csv')
+model, scaler, auc = train_model(df)
+
+st.sidebar.header("Loan Prediction Input")
+amount = st.sidebar.number_input("Loan Amount")
+duration = st.sidebar.slider("Duration (months)", 12, 60)
+payments = st.sidebar.number_input("Monthly Payment")
+
+if st.sidebar.button("Predict Risk"):
+    # Scale input the same way as training data
+    input_data = scaler.transform([[amount, duration, payments]])
+    prediction = model.predict(input_data)
+    prob = model.predict_proba(input_data)[0][1]
+    
+    st.write(f"Risk Probability: {prob:.2%}")
+    st.write("Model AUC Score:", auc)
+
